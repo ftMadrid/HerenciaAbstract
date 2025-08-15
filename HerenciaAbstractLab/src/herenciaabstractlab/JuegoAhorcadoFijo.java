@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
-    private AdminPalabrasSecretas admin;
+    private final PanelAhorcado panel;
 
     public JuegoAhorcadoFijo() {
 
@@ -14,9 +14,9 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         ventana.setLayout(null);
         ventana.setResizable(false);
         ventana.setLocationRelativeTo(null);
-        
+
+        panel = new PanelAhorcado();
         panel.setBounds(50, 35, 550, 500);
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         ventana.add(panel);
 
         ingreso.setBounds(650, 100, 150, 50);
@@ -79,6 +79,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         } else {
             intentos--;
             intentosL.setText("Intentos restantes: " + intentos);
+            panel.setErrores(limiteIntentos - intentos + 1);
         }
 
         if (hasGanado()) {
@@ -137,8 +138,84 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         inicializarPalabraSecreta();
     }
 
+    private class PanelAhorcado extends JPanel {
+
+        private int errores = 0;
+        private final Image[] partes;
+
+        public PanelAhorcado() {
+            setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+
+            // Tamaño que queremos para cada parte dentro del panel
+            int ancho = 80;   // ajusta según prefieras
+            int alto = 80;
+
+            partes = new Image[]{
+                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/pie1.png")).getImage()
+                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH),
+                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/pie2.png")).getImage()
+                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH),
+                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/brazo1.png")).getImage()
+                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH),
+                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/brazo2.png")).getImage()
+                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH),
+                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/torso.png")).getImage()
+                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH),
+                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/cabeza.png")).getImage()
+                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH)
+            };
+        }
+
+        public void setErrores(int errores) {
+            this.errores = errores;
+            repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            int baseX = 100; // posición X inicial
+            int baseY = 50;  // posición Y inicial
+
+            // Dibujar cada parte en posiciones separadas
+            for (int i = 0; i < errores && i < partes.length; i++) {
+                int offsetX = 0;
+                int offsetY = 0;
+
+                switch (i) {
+                    case 0:
+                        offsetX = 150;
+                        offsetY = 400;
+                        break; // pie1
+                    case 1:
+                        offsetX = 250;
+                        offsetY = 400;
+                        break; // pie2
+                    case 2:
+                        offsetX = 100;
+                        offsetY = 250;
+                        break; // brazo1
+                    case 3:
+                        offsetX = 300;
+                        offsetY = 250;
+                        break; // brazo2
+                    case 4:
+                        offsetX = 200;
+                        offsetY = 250;
+                        break; // torso
+                    case 5:
+                        offsetX = 200;
+                        offsetY = 150;
+                        break; // cabeza
+                }
+
+                g.drawImage(partes[i], offsetX, offsetY, null);
+            }
+        }
+    }
+
     private final JFrame ventana = new JFrame("Juego del Ahorcado | Modo Fijo");
-    private final JPanel panel = new JPanel();
     private final JTextField ingreso = new JTextField();
     private final JLabel palabraL = new JLabel();
     private final JLabel intentosL = new JLabel();
