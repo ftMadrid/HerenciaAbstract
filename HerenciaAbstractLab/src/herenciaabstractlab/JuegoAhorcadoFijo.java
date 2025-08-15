@@ -2,6 +2,7 @@ package herenciaabstractlab;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
@@ -127,6 +128,8 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         ingreso.setEnabled(true);
         botonEnviar.setEnabled(true);
         botonJugar.setEnabled(false);
+        panel.setErrores(0);
+        panel.repaint();
     }
 
     private String formatearConEspacios(String texto) {
@@ -141,76 +144,42 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
     private class PanelAhorcado extends JPanel {
 
         private int errores = 0;
-        private final Image[] partes;
+        private final JLabel stickmanLabel;
 
         public PanelAhorcado() {
+            setLayout(null);
+            setBounds(50, 35, 550, 500);
             setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
-            int ancho = 80;
-            int alto = 80;
-
-            partes = new Image[]{
-                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/pie1.png")).getImage()
-                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH),
-                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/pie2.png")).getImage()
-                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH),
-                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/brazo1.png")).getImage()
-                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH),
-                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/brazo2.png")).getImage()
-                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH),
-                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/torso.png")).getImage()
-                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH),
-                new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/cabeza.png")).getImage()
-                .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH)
-            };
+            stickmanLabel = new JLabel();
+            stickmanLabel.setBounds(0, 0, getWidth(), getHeight());
+            stickmanLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            add(stickmanLabel);
         }
 
         public void setErrores(int errores) {
             this.errores = errores;
-            repaint();
+            actualizarImagen();
         }
 
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-
-            for (int i = 0; i < errores && i < partes.length; i++) {
-                int offsetX = 0;
-                int offsetY = 0;
-
-                switch (i) {
-                    case 0:
-                        offsetX = 150;
-                        offsetY = 400;
-                        break; // pie1
-                    case 1:
-                        offsetX = 250;
-                        offsetY = 400;
-                        break; // pie2
-                    case 2:
-                        offsetX = 100;
-                        offsetY = 250;
-                        break; // brazo1
-                    case 3:
-                        offsetX = 300;
-                        offsetY = 250;
-                        break; // brazo2
-                    case 4:
-                        offsetX = 200;
-                        offsetY = 250;
-                        break; // torso
-                    case 5:
-                        offsetX = 200;
-                        offsetY = 150;
-                        break; // cabeza
-                }
-
-                g.drawImage(partes[i], offsetX, offsetY, null);
-                repaint();
+        private void actualizarImagen() {
+            if (errores <= 0) {
+                stickmanLabel.setIcon(null);
+                return;
             }
+            if (errores > 6) {
+                errores = 6;
+            }
+
+            String ruta = "C:\\Users\\user\\Desktop\\Github\\A\\HerenciaAbstract\\HerenciaAbstractLab\\src\\herenciaabstractlab\\imagenes\\thanos\\cuerpo" + errores + ".png";
+            File archivo = new File(ruta);
+                ImageIcon icon = new ImageIcon(ruta);
+                Image imgEscalada = icon.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+
+                stickmanLabel.setIcon(new ImageIcon(imgEscalada));
+            
         }
     }
-
     private final JFrame ventana = new JFrame("Juego del Ahorcado | Modo Fijo");
     private final JTextField ingreso = new JTextField();
     private final JLabel palabraL = new JLabel();
