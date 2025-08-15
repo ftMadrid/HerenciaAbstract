@@ -1,45 +1,111 @@
 package herenciaabstractlab;
 
-import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.*;
+import java.util.ArrayList;
 
-public class AdminPalabrasSecretas extends JFrame{
+public class AdminPalabrasSecretas extends JFrame {
 
-    static ArrayList<String> palabras = new ArrayList<>();
-    Random random = new Random();
+    public static ArrayList<String> palabras = new ArrayList<>();
+    public static boolean primeraVez = true;
+    public static String palabraFija=null;
+
+    private JTextField ingreso;
+    private JButton agregar, reset, finalizar;
+    private JLabel info;
+    private int contador = 0;
+    private final int MAX_PALABRAS = 10;
 
     public AdminPalabrasSecretas() {
+        super("Administrador de Palabras");
         palabras.add("Hola");
         palabras.add("Adios");
-        palabras.add("Bonjour");
+        setSize(400, 300);
+        setLayout(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        
+        
+        ingreso = new JTextField();
+        ingreso.setBounds(50, 50, 200, 30);
+        add(ingreso);
 
-    }
+      
+        agregar = new JButton("Agregar");
+        agregar.setBounds(260, 50, 100, 30);
+        add(agregar);
 
-    public String getPalabra() {
-        int numRandom = random.nextInt(palabras.size() - 1);
-        return palabras.get(numRandom);
-    }
+        
+        reset = new JButton("Resetear");
+        reset.setBounds(50, 100, 100, 30);
+        add(reset);
 
-    public boolean agregarPalabra(String palabra) {
-        if (buscarPalabra(palabra)) {
-            JOptionPane.showMessageDialog(null, "Ya existe esa palabra");
-            return false;
+       
+        finalizar = new JButton("Finalizar");
+        finalizar.setBounds(160, 100, 100, 30);
+        finalizar.setEnabled(false);
+        add(finalizar);
 
-        }
-        palabras.add(palabra);
-        return true;
-    }
+        
+        info = new JLabel("Palabras agregadas: 0 / 10");
+        info.setBounds(50, 150, 300, 30);
+        add(info);
 
-    public boolean buscarPalabra(String palabra) {
-        for (String p : palabras) {
-            if (p.equals(palabra)) {
-                return false;
+       
+        agregar.addActionListener(e -> {
+            String palabra = ingreso.getText().trim();
+            if (!palabra.isEmpty()) {
+                if (!palabras.contains(palabra)) {
+                    palabras.add(palabra);
+                    contador++;
+                    info.setText("Palabras agregadas: " + contador + " / " + MAX_PALABRAS);
+                    ingreso.setText("");
+                    if (contador >= MAX_PALABRAS) {
+                        agregar.setEnabled(false);
+                        finalizar.setEnabled(true);
+                        JOptionPane.showMessageDialog(this,
+                                "Has alcanzado 10 palabras, puedes finalizar.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "La palabra ya existe");
+                }
             }
-        }
-        return true;
+        });
+
+        
+        reset.addActionListener(e -> {
+            palabras.clear();
+            contador = 0;
+            info.setText("Palabras agregadas: 0 / 10");
+            agregar.setEnabled(true);
+            finalizar.setEnabled(false);
+        });
+        
+        finalizar.addActionListener(e -> {
+            if (contador < MAX_PALABRAS) {
+                JOptionPane.showMessageDialog(this,
+                        "Debes agregar exactamente 10 palabras antes de finalizar.");
+                return;
+            }
+            primeraVez = false; 
+            JOptionPane.showMessageDialog(this, "Palabras guardadas correctamente.");
+            dispose();
+        });
+
+        setVisible(true);
     }
 
+    
+    public static String getPalabra() {
+        if (palabras.isEmpty()) return "DEFAULT";
+        int random = (int) (Math.random() * palabras.size());
+        return palabras.get(random);
+    }
+    
+    public static ArrayList<String> getListaPalabras() {
+        return palabras;
+    }
+
+    public static void main(String[] args) {
+        new AdminPalabrasSecretas();
+    }
 }
-
-
