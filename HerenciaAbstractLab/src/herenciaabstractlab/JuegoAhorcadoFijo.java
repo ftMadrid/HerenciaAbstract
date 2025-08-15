@@ -3,6 +3,7 @@ package herenciaabstractlab;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.net.URL;
 
 public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
@@ -171,12 +172,14 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
                 errores = 6;
             }
 
-            String ruta = "C:\\Users\\user\\Desktop\\Github\\A\\HerenciaAbstract\\HerenciaAbstractLab\\src\\herenciaabstractlab\\imagenes\\thanos\\cuerpo" + errores + ".png";
-            File archivo = new File(ruta);
-                ImageIcon icon = new ImageIcon(ruta);
+            URL url = getClass().getResource("/herenciaabstractlab/imagenes/thanos/cuerpo" + errores + ".png");
+            if (url != null) {
+                ImageIcon icon = new ImageIcon(url);
                 Image imgEscalada = icon.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-
                 stickmanLabel.setIcon(new ImageIcon(imgEscalada));
+            } else {
+                stickmanLabel.setIcon(null);
+            }
             
         }
     }
