@@ -8,7 +8,6 @@ import java.io.File;
 public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
 
     private final PanelAhorcado panel;
-    private AdminPalabrasSecretas admin;
 
     public JuegoAhorcadoAzar() {
 
@@ -86,11 +85,11 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         }
 
         if (hasGanado()) {
-            JOptionPane.showMessageDialog(ventana, "¡Ganaste!");
+            JOptionPane.showMessageDialog(ventana, "Felicidades Ganaste!");
             ventana.dispose();
             new Main().setVisible(true);
         } else if (intentos <= 0) {
-            JOptionPane.showMessageDialog(ventana, "¡Perdiste! La palabra era: " + palabraSecreta);
+            JOptionPane.showMessageDialog(ventana, "Perdiste! La palabra era: " + palabraSecreta);
             ventana.dispose();
             new Main().setVisible(true);
         }
@@ -131,7 +130,7 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         botonEnviar.setEnabled(true);
         botonJugar.setEnabled(false);
 
-        panel.setErrores(0); // reinicia el dibujo
+        panel.setErrores(0);
         panel.repaint();
     }
 
@@ -192,6 +191,7 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         }
     }
 }
+
 
 
     public static void main(String[] args) {

@@ -28,29 +28,24 @@ public class Main extends JFrame {
 
     private void initComponentes() {
 
-        // Título
         titulo.setBounds(145, 60, 500, 147);
         titulo.setIcon(new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/titulo.png")));
 
-        // Botón JUGAR
         jugar.setBounds(260, 270, 260, 70);
         jugar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         jugar.setFont(new Font("Kefa", Font.BOLD, 26));
         jugar.addActionListener(e -> jugarAction());
 
-        // Botón ADMIN
         admin.setBounds(260, 350, 260, 70);
         admin.setCursor(new Cursor(Cursor.HAND_CURSOR));
         admin.setFont(new Font("Kefa", Font.BOLD, 22));
         admin.addActionListener(e -> adminAction());
 
-        // Botón SALIR
         salir.setBounds(260, 430, 260, 70);
         salir.setCursor(new Cursor(Cursor.HAND_CURSOR));
         salir.setFont(new Font("Kefa", Font.BOLD, 26));
         salir.addActionListener(e -> salirAction());
 
-        // Agregar componentes a la ventana
         add(titulo);
         add(jugar);
         add(admin);
@@ -59,7 +54,6 @@ public class Main extends JFrame {
 
     private void jugarAction() {
 
-        // Selección de modo de juego
         int resultado = JOptionPane.showConfirmDialog(null, juegos, "MODO DE JUEGO",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
@@ -92,7 +86,7 @@ public class Main extends JFrame {
                             return;
                         }
 
-                    } // Fin de la primera vez
+                    }
 
                     JuegoAhorcadoFijo juegito = new JuegoAhorcadoFijo();//Palabra fija agregar?
                     break;
@@ -101,11 +95,10 @@ public class Main extends JFrame {
 
         }
 
-        dispose(); // cerrar ventana principal
+        dispose();
     }
 
     private void adminAction() {
-        // Abrir ventana Admin
         AdminPalabrasSecretas ventanaAdmin = new AdminPalabrasSecretas();
         ventanaAdmin.setVisible(true);
         dispose();
@@ -122,8 +115,16 @@ public class Main extends JFrame {
 
     public void first() {
         if (first) {
+            palabras.add("Comida");
+            palabras.add("Beber");
             palabras.add("Hola");
             palabras.add("Adios");
+            palabras.add("Programacion");
+            palabras.add("Laboratorio");
+            palabras.add("Geometria");
+            palabras.add("Madrid");
+            palabras.add("Barcelona");
+            palabras.add("Energia");
             System.out.println("A");
             first = false;
         }

@@ -83,11 +83,11 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         }
 
         if (hasGanado()) {
-            JOptionPane.showMessageDialog(ventana, "¡Ganaste!");
+            JOptionPane.showMessageDialog(ventana, "Felicidades Ganaste!");
             ventana.dispose();
             new Main().setVisible(true);
         } else if (intentos <= 0) {
-            JOptionPane.showMessageDialog(ventana, "¡Perdiste! La palabra era: " + palabraSecreta);
+            JOptionPane.showMessageDialog(ventana, "Perdiste! La palabra era: " + palabraSecreta);
             ventana.dispose();
             new Main().setVisible(true);
         }
@@ -146,8 +146,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         public PanelAhorcado() {
             setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
-            // Tamaño que queremos para cada parte dentro del panel
-            int ancho = 80;   // ajusta según prefieras
+            int ancho = 80;
             int alto = 80;
 
             partes = new Image[]{
@@ -175,10 +174,6 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            int baseX = 100; // posición X inicial
-            int baseY = 50;  // posición Y inicial
-
-            // Dibujar cada parte en posiciones separadas
             for (int i = 0; i < errores && i < partes.length; i++) {
                 int offsetX = 0;
                 int offsetY = 0;
