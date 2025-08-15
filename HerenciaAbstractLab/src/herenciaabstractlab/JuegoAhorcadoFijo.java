@@ -29,13 +29,15 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         ventana.setLocationRelativeTo(null);
 
         ingreso = new JTextField();
-        ingreso.setBounds(50, 50, 50, 50);
-        ventana.add(ingreso);
+        ingreso.setBounds(100, 100, 50, 50);
         ingreso.setVisible(true);
+        ventana.add(ingreso);
+        
         
         
         
         ventana.setVisible(true);
+        
 
     }
 
