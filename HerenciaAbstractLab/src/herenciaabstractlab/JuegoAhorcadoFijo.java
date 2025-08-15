@@ -12,7 +12,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
     private JLabel palabraL, intentosL;
 
     public JuegoAhorcadoFijo() {
-        // Configuración de ventana
+        
         ventana = new JFrame("Juego del Ahorcado");
         ventana.setSize(500, 500);
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,39 +22,38 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
         admin = new AdminPalabrasSecretas();
 
-        // Campo de texto para ingresar letras
+        
         ingreso = new JTextField();
         ingreso.setBounds(100, 100, 150, 30);
         ventana.add(ingreso);
 
-        // Etiqueta para mostrar la palabra
+        
         palabraL = new JLabel();
         palabraL.setBounds(100, 200, 300, 30);
         palabraL.setVisible(false);
         ventana.add(palabraL);
 
-        // Etiqueta para mostrar intentos restantes
+        
         intentosL = new JLabel();
         intentosL.setBounds(100, 250, 200, 30);
         intentosL.setVisible(false);
         ventana.add(intentosL);
-
-        // Botón para enviar letra
+        
+        
         botonEnviar = new JButton("Enviar");
         botonEnviar.setBounds(260, 100, 100, 30);
         ventana.add(botonEnviar);
 
-        // Botón para iniciar el juego
+        
         botonJugar = new JButton("Jugar");
         botonJugar.setBounds(260, 130, 100, 30);
         ventana.add(botonJugar);
-
-        // Acción del botón Jugar
+        
         botonJugar.addActionListener(e -> {
             jugar();
         });
 
-        // Acción del botón Enviar
+        
         botonEnviar.addActionListener(e -> {
             String texto = ingreso.getText().trim();
             if (!texto.isEmpty()) {
@@ -68,7 +67,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
     }
 
     private void procesarLetra(char letra) {
-        letra = Character.toLowerCase(letra); // Para no diferenciar mayúsculas
+        letra = Character.toLowerCase(letra); 
 
         if (letraUsadas.contains(letra)) {
             JOptionPane.showMessageDialog(ventana, "Ya usaste esa letra");
