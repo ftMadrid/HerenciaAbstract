@@ -1,20 +1,15 @@
 package herenciaabstractlab;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
     private AdminPalabrasSecretas admin;
 
-    private JFrame ventana;
-    private JButton botonEnviar, botonJugar;
-    private JTextField ingreso;
-    private JLabel palabraL, intentosL;
-
     public JuegoAhorcadoFijo() {
-        
-        ventana = new JFrame("Juego del Ahorcado");
-        ventana.setSize(500, 500);
+
+        ventana.setSize(1000, 600);
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setLayout(null);
         ventana.setResizable(false);
@@ -22,52 +17,48 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
         admin = new AdminPalabrasSecretas();
 
-        
-        ingreso = new JTextField();
-        ingreso.setBounds(100, 100, 150, 30);
+        ingreso.setBounds(650, 100, 150, 50);
+        ingreso.setFont(new Font("Kefa", Font.PLAIN, 28));
+        ingreso.setEnabled(false);
         ventana.add(ingreso);
 
-        
-        palabraL = new JLabel();
         palabraL.setBounds(100, 200, 300, 30);
         palabraL.setVisible(false);
         ventana.add(palabraL);
 
-        
-        intentosL = new JLabel();
         intentosL.setBounds(100, 250, 200, 30);
         intentosL.setVisible(false);
         ventana.add(intentosL);
-        
-        
-        botonEnviar = new JButton("Enviar");
-        botonEnviar.setBounds(260, 100, 100, 30);
+
+        botonEnviar.setBounds(800, 100, 150, 50);
+        botonEnviar.setFont(new Font("Kefa", Font.BOLD, 22));
+        botonEnviar.setForeground(new Color(22, 201, 52));
+        botonEnviar.setEnabled(false);
         ventana.add(botonEnviar);
 
-        
-        botonJugar = new JButton("Jugar");
-        botonJugar.setBounds(260, 130, 100, 30);
+        botonJugar.setBounds(720, 400, 150, 50);
+        botonJugar.setFont(new Font("Kefa", Font.BOLD, 22));
+        botonJugar.setForeground(new Color(5, 189, 245));
         ventana.add(botonJugar);
-        
-        botonJugar.addActionListener(e -> {
-            jugar();
-        });
 
-        
-        botonEnviar.addActionListener(e -> {
-            String texto = ingreso.getText().trim();
-            if (!texto.isEmpty()) {
-                char letra = texto.charAt(0);
-                procesarLetra(letra);
-            }
-            ingreso.setText("");
-        });
+        botonJugar.addActionListener(e -> jugar());
+
+        botonEnviar.addActionListener(e -> enviarAction());
 
         ventana.setVisible(true);
     }
 
+    private void enviarAction() {
+        String texto = ingreso.getText().trim();
+        if (!texto.isEmpty()) {
+            char letra = texto.charAt(0);
+            procesarLetra(letra);
+        }
+        ingreso.setText("");
+    }
+
     private void procesarLetra(char letra) {
-        letra = Character.toLowerCase(letra); 
+        letra = Character.toLowerCase(letra);
 
         if (letraUsadas.contains(letra)) {
             JOptionPane.showMessageDialog(ventana, "Ya usaste esa letra");
@@ -78,7 +69,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
         if (verificarletra(letra)) {
             actualizarPalabraActual(letra);
-            palabraL.setText(palabraActual);
+            palabraL.setText(formatearConEspacios(palabraActual.toUpperCase()));
         } else {
             intentos--;
             intentosL.setText("Intentos restantes: " + intentos);
@@ -86,12 +77,12 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
         if (hasGanado()) {
             JOptionPane.showMessageDialog(ventana, "¡Ganaste!");
-            palabraL.setVisible(false);
-            intentosL.setVisible(false);
+            ventana.dispose();
+            new Main().setVisible(true);
         } else if (intentos <= 0) {
             JOptionPane.showMessageDialog(ventana, "¡Perdiste! La palabra era: " + palabraSecreta);
-            palabraL.setVisible(false);
-            intentosL.setVisible(false);
+            ventana.dispose();
+            new Main().setVisible(true);
         }
     }
 
@@ -120,18 +111,32 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
     public void inicializarPalabraSecreta() {
         palabraSecreta = admin.getPalabra().toLowerCase();
         palabraActual = "_".repeat(palabraSecreta.length());
-        palabraL.setText(palabraActual);
+        palabraL.setText(formatearConEspacios(palabraActual.toUpperCase()));
         palabraL.setVisible(true);
         letraUsadas.clear();
         intentos = limiteIntentos;
         intentosL.setText("Intentos restantes: " + intentos);
         intentosL.setVisible(true);
+        ingreso.setEnabled(true);
+        botonEnviar.setEnabled(true);
+        botonJugar.setEnabled(false);
+    }
+
+    private String formatearConEspacios(String texto) {
+        return texto.replaceAll("", " ").trim();
     }
 
     @Override
     public void jugar() {
         inicializarPalabraSecreta();
     }
+
+    private final JFrame ventana = new JFrame("Juego del Ahorcado");
+    private final JTextField ingreso = new JTextField();
+    private final JLabel palabraL = new JLabel();
+    private final JLabel intentosL = new JLabel();
+    private final JButton botonEnviar = new JButton("Enviar");
+    private final JButton botonJugar = new JButton("Jugar");
 
     public static void main(String[] args) {
         new JuegoAhorcadoFijo();
