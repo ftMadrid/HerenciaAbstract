@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package herenciaabstractlab;
 
 import javax.swing.*;
@@ -20,26 +16,30 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
     JTextField ingreso;
 
     public JuegoAhorcadoFijo() {
-        ventana = new JFrame("Juego del Ahorcado");
-        ventana.setSize(500, 500);
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setLayout(null);
-        ventana.setVisible(true);
-        ventana.setResizable(false);
-        ventana.setLocationRelativeTo(null);
+    ventana = new JFrame("Juego del Ahorcado");
+    ventana.setSize(500, 500);
+    ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    ventana.setLayout(null);
+    ventana.setResizable(false);
+    ventana.setLocationRelativeTo(null);
 
-        ingreso = new JTextField();
-        ingreso.setBounds(100, 100, 50, 50);
-        ingreso.setVisible(true);
-        ventana.add(ingreso);
-        
-        
-        
-        
-        ventana.setVisible(true);
-        
+    // Inicializamos el administrador de palabras
+    admin = new AdminPalabrasSecretas();
 
-    }
+    // Crear JTextField
+    ingreso = new JTextField();
+    ingreso.setBounds(100, 100, 150, 30); // 
+    ventana.add(ingreso);
+
+    // Crear botón para enviar letra
+    boton = new JButton("Enviar");
+    boton.setBounds(260, 100, 100, 30);
+    ventana.add(boton);
+
+    // Mostrar ventana al final
+    ventana.setVisible(true);
+}
+
 
     @Override
     public char actualizarPalabraActual(char letra) {
