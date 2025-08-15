@@ -1,18 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package herenciaabstractlab;
 
 import java.util.ArrayList;
 import java.util.Random;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
-/**
- *
- * @author user
- */
-public class AdminPalabrasSecretas {
+public class AdminPalabrasSecretas extends JFrame{
 
     static ArrayList<String> palabras = new ArrayList<>();
     Random random = new Random();

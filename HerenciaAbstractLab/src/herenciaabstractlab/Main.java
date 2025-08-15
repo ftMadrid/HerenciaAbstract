@@ -28,10 +28,12 @@ public class Main extends JFrame{
         jugar.setBounds(260, 270, 260, 70); //X , Y , WIDTH , HEIGHT
         jugar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         jugar.setFont(new Font("Kefa", Font.BOLD, 26));
+        jugar.addActionListener(e -> jugarAction());
         
         admin.setBounds(260, 350, 260, 70); //X , Y , WIDTH , HEIGHT
         admin.setCursor(new Cursor(Cursor.HAND_CURSOR));
         admin.setFont(new Font("Kefa", Font.BOLD, 22));
+        admin.addActionListener(e -> adminAction());
         
         salir.setBounds(260, 430, 260, 70); //X , Y , WIDTH , HEIGHT
         salir.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -47,10 +49,31 @@ public class Main extends JFrame{
     
     private void jugarAction(){
         
+        int resultado = JOptionPane.showConfirmDialog(null, juegos, "MODO DE JUEGO", JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE);
+
+        if (resultado == JOptionPane.OK_OPTION) {
+            
+            String seleccion = (String) juegos.getSelectedItem();
+            JOptionPane.showMessageDialog(null, "Modo de Juego: " + seleccion);
+            
+            switch(seleccion){
+                case "Al Azar":
+                    break;
+                case "Fijo":
+                    new JuegoAhorcadoFijo();
+                    break;
+            }
+            
+            dispose();
+            
+        }
+        
     }
     
     private void adminAction(){
-        
+        dispose();
+        new AdminPalabrasSecretas().setVisible(true);
     }
     
     private void salirAction(){
@@ -63,6 +86,7 @@ public class Main extends JFrame{
     private final JButton jugar = new JButton("JUGAR");
     private final JButton admin = new JButton("PALABRAS SECRETAS");
     private final JButton salir = new JButton("SALIR");
+    private final JComboBox<String> juegos = new JComboBox<>(new String[] {"Al Azar", "Fijo"});
 
     public static void main(String[] args) {
         

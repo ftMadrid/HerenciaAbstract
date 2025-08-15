@@ -2,10 +2,6 @@ package herenciaabstractlab;
 
 import javax.swing.*;
 
-/**
- *
- * @author user
- */
 public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
     AdminPalabrasSecretas admin;
