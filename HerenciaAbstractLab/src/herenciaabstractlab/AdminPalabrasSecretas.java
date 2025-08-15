@@ -99,6 +99,11 @@ public class AdminPalabrasSecretas extends JFrame {
     public static ArrayList<String> getListaPalabras() {
         return palabras;
     }
+    
+    public static String palabraFija()
+    {
+    return palabraFija;
+    }
 
     public static void main(String[] args) {
         new AdminPalabrasSecretas();

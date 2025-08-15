@@ -20,29 +20,29 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         ventana.add(panel);
 
         ingreso.setBounds(650, 100, 150, 50);
-        ingreso.setFont(new Font("Kefa", Font.PLAIN, 28));
+        ingreso.setFont(new Font("Arial", Font.PLAIN, 28));
         ingreso.setEnabled(false);
         ventana.add(ingreso);
 
         palabraL.setBounds(655, 230, 300, 30);
-        palabraL.setFont(new Font("Kefa", Font.PLAIN, 28));
+        palabraL.setFont(new Font("Arial", Font.PLAIN, 28));
         palabraL.setVisible(false);
         ventana.add(palabraL);
 
         intentosL.setBounds(655, 280, 300, 30);
-        intentosL.setFont(new Font("Kefa", Font.PLAIN, 26));
+        intentosL.setFont(new Font("Arial", Font.PLAIN, 26));
         intentosL.setVisible(false);
         ventana.add(intentosL);
 
         botonEnviar.setBounds(810, 100, 150, 50);
-        botonEnviar.setFont(new Font("Kefa", Font.BOLD, 26));
+        botonEnviar.setFont(new Font("Arial", Font.BOLD, 26));
         botonEnviar.setForeground(new Color(22, 201, 52));
         botonEnviar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         botonEnviar.setEnabled(false);
         ventana.add(botonEnviar);
 
         botonJugar.setBounds(720, 400, 150, 50);
-        botonJugar.setFont(new Font("Kefa", Font.BOLD, 22));
+        botonJugar.setFont(new Font("Arial", Font.BOLD, 22));
         botonJugar.setForeground(new Color(5, 189, 245));
         botonJugar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         ventana.add(botonJugar);
@@ -115,7 +115,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
     @Override
     public void inicializarPalabraSecreta() {
-        palabraSecreta = admin.getPalabra().toLowerCase();
+        palabraSecreta = AdminPalabrasSecretas.palabraFija().toLowerCase();
         palabraActual = "_".repeat(palabraSecreta.length());
         palabraL.setText(formatearConEspacios(palabraActual.toUpperCase()));
         palabraL.setVisible(true);
