@@ -69,7 +69,7 @@ public class Main extends JFrame {
 
             switch (seleccion) {
                 case "Al Azar":
-                    //new JuegoAhorcadoFijo(); // modo al azar
+                    new JuegoAhorcadoAzar();
                     break;
 
                 case "Fijo":
@@ -83,12 +83,11 @@ public class Main extends JFrame {
                         int seleccionPalabra = JOptionPane.showConfirmDialog(null, palabr, "PALABRA", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
                         String palabraElegida;
-                        System.out.println("A");
                         if (seleccionPalabra == JOptionPane.OK_OPTION && palabr.getSelectedItem() != null) {
                             palabraElegida = (String) palabr.getSelectedItem();
                             AdminPalabrasSecretas.palabraFija = palabraElegida;
-                            System.out.println("B");
                             AdminPalabrasSecretas.primeraVez = false;
+                            System.out.println(AdminPalabrasSecretas.palabraFija);
                         } else if (seleccionPalabra == JOptionPane.CANCEL_OPTION) {
                             return;
                         }
@@ -109,7 +108,9 @@ public class Main extends JFrame {
         // Abrir ventana Admin
         AdminPalabrasSecretas ventanaAdmin = new AdminPalabrasSecretas();
         ventanaAdmin.setVisible(true);
-        AdminPalabrasSecretas.primeraVez = false; // Ya se abrió admin
+        dispose();
+        
+        
     }
 
     private void salirAction() {
@@ -123,6 +124,7 @@ public class Main extends JFrame {
         if (first) {
             palabras.add("Hola");
             palabras.add("Adios");
+            System.out.println("A");
             first = false;
         }
     }

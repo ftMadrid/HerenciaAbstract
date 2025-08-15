@@ -18,7 +18,7 @@ public class AdminPalabrasSecretas extends JFrame {
 
     public AdminPalabrasSecretas() {
         super("Administrador de Palabras");
-
+        palabras.clear();
         setSize(400, 300);
         setLayout(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -82,6 +82,7 @@ public class AdminPalabrasSecretas extends JFrame {
             }
             primeraVez = true;
             JOptionPane.showMessageDialog(this, "Palabras guardadas correctamente.");
+            new Main().setVisible(true);
             dispose();
         });
 
