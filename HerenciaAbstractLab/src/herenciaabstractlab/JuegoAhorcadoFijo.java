@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package herenciaabstractlab;
+
 import javax.swing.*;
 
 /**
@@ -10,12 +11,13 @@ import javax.swing.*;
  * @author user
  */
 public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
-AdminPalabrasSecretas admin;
-String palabraJugar;
-int intentos;
-JFrame ventana;
-JButton boton;
-JTextField ingreso;
+
+    AdminPalabrasSecretas admin;
+    String palabraJugar;
+    int intentos;
+    JFrame ventana;
+    JButton boton;
+    JTextField ingreso;
 
     public JuegoAhorcadoFijo() {
         ventana = new JFrame("Juego del Ahorcado");
@@ -25,21 +27,22 @@ JTextField ingreso;
         ventana.setVisible(true);
         ventana.setResizable(false);
         ventana.setLocationRelativeTo(null);
+
         ingreso = new JTextField();
-        ingreso.setBounds(50,50,50,50);
+        ingreso.setBounds(50, 50, 50, 50);
+        ventana.add(ingreso);
+        ingreso.setVisible(true);
         
         
         
-        
+        ventana.setVisible(true);
 
     }
 
     @Override
     public char actualizarPalabraActual(char letra) {
-        if (verificarletra(letra))
-        {
-        
-            
+        if (verificarletra(letra)) {
+
         }
         return 'a';
 
@@ -66,7 +69,7 @@ JTextField ingreso;
     public void jugar() {
 
     }
-    
+
     public static void main(String[] args) {
         JuegoAhorcadoFijo a = new JuegoAhorcadoFijo();
     }
