@@ -14,31 +14,37 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         ventana.setLayout(null);
         ventana.setResizable(false);
         ventana.setLocationRelativeTo(null);
-
-        admin = new AdminPalabrasSecretas();
+        
+        panel.setBounds(50, 35, 550, 500);
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        ventana.add(panel);
 
         ingreso.setBounds(650, 100, 150, 50);
         ingreso.setFont(new Font("Kefa", Font.PLAIN, 28));
         ingreso.setEnabled(false);
         ventana.add(ingreso);
 
-        palabraL.setBounds(100, 200, 300, 30);
+        palabraL.setBounds(655, 230, 300, 30);
+        palabraL.setFont(new Font("Kefa", Font.PLAIN, 28));
         palabraL.setVisible(false);
         ventana.add(palabraL);
 
-        intentosL.setBounds(100, 250, 200, 30);
+        intentosL.setBounds(655, 280, 300, 30);
+        intentosL.setFont(new Font("Kefa", Font.PLAIN, 26));
         intentosL.setVisible(false);
         ventana.add(intentosL);
 
-        botonEnviar.setBounds(800, 100, 150, 50);
-        botonEnviar.setFont(new Font("Kefa", Font.BOLD, 22));
+        botonEnviar.setBounds(810, 100, 150, 50);
+        botonEnviar.setFont(new Font("Kefa", Font.BOLD, 26));
         botonEnviar.setForeground(new Color(22, 201, 52));
+        botonEnviar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         botonEnviar.setEnabled(false);
         ventana.add(botonEnviar);
 
         botonJugar.setBounds(720, 400, 150, 50);
         botonJugar.setFont(new Font("Kefa", Font.BOLD, 22));
         botonJugar.setForeground(new Color(5, 189, 245));
+        botonJugar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         ventana.add(botonJugar);
 
         botonJugar.addActionListener(e -> jugar());
@@ -131,7 +137,8 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         inicializarPalabraSecreta();
     }
 
-    private final JFrame ventana = new JFrame("Juego del Ahorcado");
+    private final JFrame ventana = new JFrame("Juego del Ahorcado | Modo Fijo");
+    private final JPanel panel = new JPanel();
     private final JTextField ingreso = new JTextField();
     private final JLabel palabraL = new JLabel();
     private final JLabel intentosL = new JLabel();
@@ -139,6 +146,6 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
     private final JButton botonJugar = new JButton("Jugar");
 
     public static void main(String[] args) {
-        new JuegoAhorcadoFijo();
+        SwingUtilities.invokeLater(() -> new JuegoAhorcadoFijo());
     }
 }
