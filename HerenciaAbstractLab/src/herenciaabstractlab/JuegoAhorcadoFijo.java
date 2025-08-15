@@ -4,72 +4,137 @@ import javax.swing.*;
 
 public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
 
-    AdminPalabrasSecretas admin;
-    String palabraJugar;
-    int intentos;
-    JFrame ventana;
-    JButton boton;
-    JTextField ingreso;
+    private AdminPalabrasSecretas admin;
+
+    private JFrame ventana;
+    private JButton botonEnviar, botonJugar;
+    private JTextField ingreso;
+    private JLabel palabraL, intentosL;
 
     public JuegoAhorcadoFijo() {
-    ventana = new JFrame("Juego del Ahorcado");
-    ventana.setSize(500, 500);
-    ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    ventana.setLayout(null);
-    ventana.setResizable(false);
-    ventana.setLocationRelativeTo(null);
+        // Configuración de ventana
+        ventana = new JFrame("Juego del Ahorcado");
+        ventana.setSize(500, 500);
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.setLayout(null);
+        ventana.setResizable(false);
+        ventana.setLocationRelativeTo(null);
 
-    // Inicializamos el administrador de palabras
-    admin = new AdminPalabrasSecretas();
+        admin = new AdminPalabrasSecretas();
 
-    // Crear JTextField
-    ingreso = new JTextField();
-    ingreso.setBounds(100, 100, 150, 30); // 
-    ventana.add(ingreso);
+        // Campo de texto para ingresar letras
+        ingreso = new JTextField();
+        ingreso.setBounds(100, 100, 150, 30);
+        ventana.add(ingreso);
 
-    // Crear botón para enviar letra
-    boton = new JButton("Enviar");
-    boton.setBounds(260, 100, 100, 30);
-    ventana.add(boton);
+        // Etiqueta para mostrar la palabra
+        palabraL = new JLabel();
+        palabraL.setBounds(100, 200, 300, 30);
+        palabraL.setVisible(false);
+        ventana.add(palabraL);
 
-    // Mostrar ventana al final
-    ventana.setVisible(true);
-}
+        // Etiqueta para mostrar intentos restantes
+        intentosL = new JLabel();
+        intentosL.setBounds(100, 250, 200, 30);
+        intentosL.setVisible(false);
+        ventana.add(intentosL);
 
+        // Botón para enviar letra
+        botonEnviar = new JButton("Enviar");
+        botonEnviar.setBounds(260, 100, 100, 30);
+        ventana.add(botonEnviar);
+
+        // Botón para iniciar el juego
+        botonJugar = new JButton("Jugar");
+        botonJugar.setBounds(260, 130, 100, 30);
+        ventana.add(botonJugar);
+
+        // Acción del botón Jugar
+        botonJugar.addActionListener(e -> {
+            jugar();
+        });
+
+        // Acción del botón Enviar
+        botonEnviar.addActionListener(e -> {
+            String texto = ingreso.getText().trim();
+            if (!texto.isEmpty()) {
+                char letra = texto.charAt(0);
+                procesarLetra(letra);
+            }
+            ingreso.setText("");
+        });
+
+        ventana.setVisible(true);
+    }
+
+    private void procesarLetra(char letra) {
+        letra = Character.toLowerCase(letra); // Para no diferenciar mayúsculas
+
+        if (letraUsadas.contains(letra)) {
+            JOptionPane.showMessageDialog(ventana, "Ya usaste esa letra");
+            return;
+        }
+
+        letraUsadas.add(letra);
+
+        if (verificarletra(letra)) {
+            actualizarPalabraActual(letra);
+            palabraL.setText(palabraActual);
+        } else {
+            intentos--;
+            intentosL.setText("Intentos restantes: " + intentos);
+        }
+
+        if (hasGanado()) {
+            JOptionPane.showMessageDialog(ventana, "¡Ganaste!");
+            palabraL.setVisible(false);
+            intentosL.setVisible(false);
+        } else if (intentos <= 0) {
+            JOptionPane.showMessageDialog(ventana, "¡Perdiste! La palabra era: " + palabraSecreta);
+            palabraL.setVisible(false);
+            intentosL.setVisible(false);
+        }
+    }
 
     @Override
-    public char actualizarPalabraActual(char letra) {
-        if (verificarletra(letra)) {
-
+    public void actualizarPalabraActual(char letra) {
+        char[] temp = palabraActual.toCharArray();
+        for (int i = 0; i < palabraSecreta.length(); i++) {
+            if (palabraSecreta.charAt(i) == letra) {
+                temp[i] = letra;
+            }
         }
-        return 'a';
-
+        palabraActual = new String(temp);
     }
 
     @Override
     public boolean verificarletra(char letra) {
-        return true;
-
+        return palabraSecreta.indexOf(letra) >= 0;
     }
 
     @Override
     public boolean hasGanado() {
-        return true;
-
+        return palabraActual.equals(palabraSecreta);
     }
 
     @Override
     public void inicializarPalabraSecreta() {
-        palabraJugar = admin.getPalabra();
+        palabraSecreta = admin.getPalabra().toLowerCase();
+        palabraActual = "_".repeat(palabraSecreta.length());
+        palabraL.setText(palabraActual);
+        palabraL.setVisible(true);
+        letraUsadas.clear();
+        intentos = limiteIntentos;
+        intentosL.setText("Intentos restantes: " + intentos);
+        intentosL.setVisible(true);
     }
 
     @Override
     public void jugar() {
-
+        inicializarPalabraSecreta();
     }
 
     public static void main(String[] args) {
-        JuegoAhorcadoFijo a = new JuegoAhorcadoFijo();
+        new JuegoAhorcadoFijo();
     }
-
 }

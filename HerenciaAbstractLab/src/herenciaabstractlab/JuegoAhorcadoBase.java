@@ -11,7 +11,7 @@ public abstract class JuegoAhorcadoBase implements JuegoAhorcado{
     protected ArrayList<Character> letraUsadas = new ArrayList<>();
     protected ArrayList<String> figuraAhorcado = new ArrayList<>();
     
-    public abstract char actualizarPalabraActual(char letra);
+    public abstract void actualizarPalabraActual(char letra);
     
     public abstract boolean verificarletra(char letra);
     
