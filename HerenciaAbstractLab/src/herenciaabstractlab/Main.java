@@ -1,13 +1,19 @@
 package herenciaabstractlab;
 
+import herenciaabstractlab.AdminPalabrasSecretas;
+import static herenciaabstractlab.AdminPalabrasSecretas.palabras;
+import herenciaabstractlab.JuegoAhorcadoFijo;
 import javax.swing.*;
 import java.awt.*;
 
 public class Main extends JFrame {
 
+    static boolean first = true;
+
     public Main() {
         initVentana();
         initComponentes();
+        first();
     }
 
     private void initVentana() {
@@ -17,6 +23,7 @@ public class Main extends JFrame {
         setLocationRelativeTo(null);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
     private void initComponentes() {
@@ -62,34 +69,40 @@ public class Main extends JFrame {
 
             switch (seleccion) {
                 case "Al Azar":
-                    new JuegoAhorcadoFijo(); // modo al azar
+                    //new JuegoAhorcadoFijo(); // modo al azar
                     break;
 
                 case "Fijo":
                     palabr.removeAllItems();
-
-            }
-            for (String p : AdminPalabrasSecretas.palabras) {
-                System.out.println("A");
-                palabr.addItem(p);
-                if (AdminPalabrasSecretas.primeraVez) {
-                    int seleccionPalabra = JOptionPane.showOptionDialog(null, palabr, "SELECCIONA PALABRA",
-                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
-
-                    String palabraElegida;
-                    if (seleccionPalabra == JOptionPane.OK_OPTION && palabr.getSelectedItem() != null) {
-                        palabraElegida = (String) palabr.getSelectedItem();
-                        AdminPalabrasSecretas.palabraFija = palabraElegida;
+                    for (String p : AdminPalabrasSecretas.getListaPalabras()) {
+                        System.out.println("b");
+                        palabr.addItem(p);
                     }
 
-                } // Fin de la primera vez
+                    if (AdminPalabrasSecretas.primeraVez) {
+                        int seleccionPalabra = JOptionPane.showConfirmDialog(null, palabr, "PALABRA", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-                new JuegoAhorcadoFijo();//Palabra fija agregar?
-                break;
+                        String palabraElegida;
+                        System.out.println("A");
+                        if (seleccionPalabra == JOptionPane.OK_OPTION && palabr.getSelectedItem() != null) {
+                            palabraElegida = (String) palabr.getSelectedItem();
+                            AdminPalabrasSecretas.palabraFija = palabraElegida;
+                            System.out.println("B");
+                            AdminPalabrasSecretas.primeraVez = false;
+                        } else if (seleccionPalabra == JOptionPane.CANCEL_OPTION) {
+                            return;
+                        }
+
+                    } // Fin de la primera vez
+
+                    JuegoAhorcadoFijo juegito = new JuegoAhorcadoFijo();//Palabra fija agregar?
+                    break;
+
             }
 
-            dispose(); // cerrar ventana principal
         }
+
+        dispose(); // cerrar ventana principal
     }
 
     private void adminAction() {
@@ -104,6 +117,14 @@ public class Main extends JFrame {
                 JOptionPane.INFORMATION_MESSAGE);
         dispose();
         System.exit(0);
+    }
+
+    public void first() {
+        if (first) {
+            palabras.add("Hola");
+            palabras.add("Adios");
+            first = false;
+        }
     }
 
     private final JLabel titulo = new JLabel();
