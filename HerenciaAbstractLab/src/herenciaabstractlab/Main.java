@@ -69,7 +69,7 @@ public class Main extends JFrame {
 
             switch (seleccion) {
                 case "Al Azar":
-                    //new JuegoAhorcadoFijo(); // modo al azar
+                    new JuegoAhorcadoAzar();
                     break;
 
                 case "Fijo":
