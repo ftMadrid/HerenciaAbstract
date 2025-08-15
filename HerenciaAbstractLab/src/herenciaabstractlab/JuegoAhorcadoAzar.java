@@ -2,9 +2,12 @@ package herenciaabstractlab;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
+import java.io.File;
 
 public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
 
+    private final PanelAhorcado panel;
     private AdminPalabrasSecretas admin;
 
     public JuegoAhorcadoAzar() {
@@ -14,7 +17,8 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         ventana.setLayout(null);
         ventana.setResizable(false);
         ventana.setLocationRelativeTo(null);
-        
+
+        panel = new PanelAhorcado();
         panel.setBounds(50, 35, 550, 500);
         panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         ventana.add(panel);
@@ -48,7 +52,6 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         ventana.add(botonJugar);
 
         botonJugar.addActionListener(e -> jugar());
-
         botonEnviar.addActionListener(e -> enviarAction());
 
         ventana.setVisible(true);
@@ -79,6 +82,7 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         } else {
             intentos--;
             intentosL.setText("Intentos restantes: " + intentos);
+            panel.setErrores(limiteIntentos - intentos);
         }
 
         if (hasGanado()) {
@@ -126,6 +130,9 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         ingreso.setEnabled(true);
         botonEnviar.setEnabled(true);
         botonJugar.setEnabled(false);
+
+        panel.setErrores(0); // reinicia el dibujo
+        panel.repaint();
     }
 
     private String formatearConEspacios(String texto) {
@@ -137,13 +144,81 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         inicializarPalabraSecreta();
     }
 
-    private final JFrame ventana = new JFrame("Juego del Ahorcado | Modo Fijo");
-    private final JPanel panel = new JPanel();
+    private final JFrame ventana = new JFrame("Juego del Ahorcado | Modo Azar");
     private final JTextField ingreso = new JTextField();
     private final JLabel palabraL = new JLabel();
     private final JLabel intentosL = new JLabel();
     private final JButton botonEnviar = new JButton("Enviar");
     private final JButton botonJugar = new JButton("Jugar");
+
+    private class PanelAhorcado extends JPanel {
+
+        private int errores = 0;
+        private final Image[] partes;
+
+        public PanelAhorcado() {
+            partes = new Image[]{
+                cargarImagen("pie1.png"),
+                cargarImagen("pie2.png"),
+                cargarImagen("brazo1.png"),
+                cargarImagen("brazo2.png"),
+                cargarImagen("torso.png"),
+                cargarImagen("cabeza.png")
+            };
+        }
+
+        private Image cargarImagen(String nombre) {
+            int ancho = 80, alto = 80;
+            Image img = null;
+
+            // Intentar desde el classpath
+            URL url = getClass().getResource("/herenciaabstractlab/imagenes/" + nombre);
+            if (url != null) {
+                img = new ImageIcon(url).getImage();
+            } else {
+                // Intentar desde carpeta local
+                File f = new File("imagenes/" + nombre);
+                if (f.exists()) {
+                    img = new ImageIcon(f.getAbsolutePath()).getImage();
+                } else {
+                    System.err.println("No se encontró la imagen: " + nombre);
+                }
+            }
+
+            if (img != null) {
+                return img.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+            }
+            return null;
+        }
+
+        public void setErrores(int errores) {
+            this.errores = errores;
+            repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            for (int i = 0; i < errores && i < partes.length; i++) {
+                if (partes[i] != null) {
+                    int offsetX = 0, offsetY = 0;
+
+                    switch (i) {
+                        case 0: offsetX = 150; offsetY = 400; break; // pie1
+                        case 1: offsetX = 250; offsetY = 400; break; // pie2
+                        case 2: offsetX = 100; offsetY = 250; break; // brazo1
+                        case 3: offsetX = 300; offsetY = 250; break; // brazo2
+                        case 4: offsetX = 200; offsetY = 250; break; // torso
+                        case 5: offsetX = 200; offsetY = 150; break; // cabeza
+                    }
+
+                    g.drawImage(partes[i], offsetX, offsetY, null);
+                    repaint();
+                }
+            }
+        }
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new JuegoAhorcadoAzar());

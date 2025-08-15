@@ -79,7 +79,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         } else {
             intentos--;
             intentosL.setText("Intentos restantes: " + intentos);
-            panel.setErrores(limiteIntentos - intentos + 1);
+            panel.setErrores(limiteIntentos - intentos);
         }
 
         if (hasGanado()) {
@@ -211,6 +211,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
                 }
 
                 g.drawImage(partes[i], offsetX, offsetY, null);
+                repaint();
             }
         }
     }
