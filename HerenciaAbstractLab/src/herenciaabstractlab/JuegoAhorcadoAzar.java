@@ -153,72 +153,46 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
 
     private class PanelAhorcado extends JPanel {
 
-        private int errores = 0;
-        private final Image[] partes;
+    private int errores = 0;
+    private final JLabel stickmanLabel;
 
-        public PanelAhorcado() {
-            partes = new Image[]{
-                cargarImagen("pie1.png"),
-                cargarImagen("pie2.png"),
-                cargarImagen("brazo1.png"),
-                cargarImagen("brazo2.png"),
-                cargarImagen("torso.png"),
-                cargarImagen("cabeza.png")
-            };
+    public PanelAhorcado() {
+        setLayout(null);
+        setBounds(50, 35, 550, 500);
+        setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+
+        stickmanLabel = new JLabel();
+        stickmanLabel.setBounds(0, 0, 550, 500);
+        stickmanLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(stickmanLabel);
+    }
+
+    public void setErrores(int errores) {
+        this.errores = errores;
+        actualizarImagen();
+    }
+
+    private void actualizarImagen() {
+        if (errores <= 0) {
+            stickmanLabel.setIcon(null);
+            return;
         }
+        if (errores > 6) errores = 6;
 
-        private Image cargarImagen(String nombre) {
-            int ancho = 80, alto = 80;
-            Image img = null;
-
-            // Intentar desde el classpath
-            URL url = getClass().getResource("/herenciaabstractlab/imagenes/" + nombre);
-            if (url != null) {
-                img = new ImageIcon(url).getImage();
-            } else {
-                // Intentar desde carpeta local
-                File f = new File("imagenes/" + nombre);
-                if (f.exists()) {
-                    img = new ImageIcon(f.getAbsolutePath()).getImage();
-                } else {
-                    System.err.println("No se encontró la imagen: " + nombre);
-                }
-            }
-
-            if (img != null) {
-                return img.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
-            }
-            return null;
-        }
-
-        public void setErrores(int errores) {
-            this.errores = errores;
-            repaint();
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-
-            for (int i = 0; i < errores && i < partes.length; i++) {
-                if (partes[i] != null) {
-                    int offsetX = 0, offsetY = 0;
-
-                    switch (i) {
-                        case 0: offsetX = 150; offsetY = 400; break; // pie1
-                        case 1: offsetX = 250; offsetY = 400; break; // pie2
-                        case 2: offsetX = 100; offsetY = 250; break; // brazo1
-                        case 3: offsetX = 300; offsetY = 250; break; // brazo2
-                        case 4: offsetX = 200; offsetY = 250; break; // torso
-                        case 5: offsetX = 200; offsetY = 150; break; // cabeza
-                    }
-
-                    g.drawImage(partes[i], offsetX, offsetY, null);
-                    repaint();
-                }
-            }
+        // Ruta local de tus imágenes
+        String ruta = "C:\\Users\\user\\Desktop\\Github\\A\\HerenciaAbstract\\HerenciaAbstractLab\\src\\herenciaabstractlab\\imagenes\\thanos\\cuerpo" + errores + ".png";
+        File archivo = new File(ruta);
+        if (archivo.exists()) {
+            ImageIcon icon = new ImageIcon(ruta);
+            Image imgEscalada = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+            stickmanLabel.setIcon(new ImageIcon(imgEscalada));
+        } else {
+            System.err.println("No se encontró: " + ruta);
+            stickmanLabel.setIcon(null);
         }
     }
+}
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new JuegoAhorcadoAzar());
