@@ -3,95 +3,117 @@ package herenciaabstractlab;
 import javax.swing.*;
 import java.awt.*;
 
-public class Main extends JFrame{
-    
-    public Main(){
+public class Main extends JFrame {
+
+    public Main() {
         initVentana();
         initComponentes();
     }
-    
-    private void initVentana(){
-        
+
+    private void initVentana() {
         setSize(800, 700);
         setTitle("AHORCADO LABORATORIO");
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(null);
-        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
-    private void initComponentes(){
-        
-        titulo.setBounds(145, 60, 500, 147); //X , Y , WIDTH , HEIGHT
+
+    private void initComponentes() {
+
+        // Título
+        titulo.setBounds(145, 60, 500, 147);
         titulo.setIcon(new ImageIcon(getClass().getResource("/herenciaabstractlab/imagenes/titulo.png")));
-        
-        jugar.setBounds(260, 270, 260, 70); //X , Y , WIDTH , HEIGHT
+
+        // Botón JUGAR
+        jugar.setBounds(260, 270, 260, 70);
         jugar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         jugar.setFont(new Font("Kefa", Font.BOLD, 26));
         jugar.addActionListener(e -> jugarAction());
-        
-        admin.setBounds(260, 350, 260, 70); //X , Y , WIDTH , HEIGHT
+
+        // Botón ADMIN
+        admin.setBounds(260, 350, 260, 70);
         admin.setCursor(new Cursor(Cursor.HAND_CURSOR));
         admin.setFont(new Font("Kefa", Font.BOLD, 22));
         admin.addActionListener(e -> adminAction());
-        
-        salir.setBounds(260, 430, 260, 70); //X , Y , WIDTH , HEIGHT
+
+        // Botón SALIR
+        salir.setBounds(260, 430, 260, 70);
         salir.setCursor(new Cursor(Cursor.HAND_CURSOR));
         salir.setFont(new Font("Kefa", Font.BOLD, 26));
         salir.addActionListener(e -> salirAction());
-        
+
+        // Agregar componentes a la ventana
         add(titulo);
         add(jugar);
         add(admin);
         add(salir);
-        
     }
-    
-    private void jugarAction(){
-        
-        int resultado = JOptionPane.showConfirmDialog(null, juegos, "MODO DE JUEGO", JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE);
+
+    private void jugarAction() {
+
+        // Selección de modo de juego
+        int resultado = JOptionPane.showConfirmDialog(null, juegos, "MODO DE JUEGO",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (resultado == JOptionPane.OK_OPTION) {
-            
+
             String seleccion = (String) juegos.getSelectedItem();
-            JOptionPane.showMessageDialog(null, "Modo de Juego: " + seleccion);
-            
-            switch(seleccion){
+
+            switch (seleccion) {
                 case "Al Azar":
+                    new JuegoAhorcadoFijo(); // modo al azar
                     break;
+
                 case "Fijo":
-                    new JuegoAhorcadoFijo();
-                    break;
+                    palabr.removeAllItems();
+
             }
-            
-            dispose();
-            
+            for (String p : AdminPalabrasSecretas.palabras) {
+                System.out.println("A");
+                palabr.addItem(p);
+                if (AdminPalabrasSecretas.primeraVez) {
+                    int seleccionPalabra = JOptionPane.showOptionDialog(null, palabr, "SELECCIONA PALABRA",
+                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+                    String palabraElegida;
+                    if (seleccionPalabra == JOptionPane.OK_OPTION && palabr.getSelectedItem() != null) {
+                        palabraElegida = (String) palabr.getSelectedItem();
+                        AdminPalabrasSecretas.palabraFija = palabraElegida;
+                    }
+
+                } // Fin de la primera vez
+
+                new JuegoAhorcadoFijo();//Palabra fija agregar?
+                break;
+            }
+
+            dispose(); // cerrar ventana principal
         }
-        
     }
-    
-    private void adminAction(){
-        dispose();
-        new AdminPalabrasSecretas().setVisible(true);
+
+    private void adminAction() {
+        // Abrir ventana Admin
+        AdminPalabrasSecretas ventanaAdmin = new AdminPalabrasSecretas();
+        ventanaAdmin.setVisible(true);
+        AdminPalabrasSecretas.primeraVez = false; // Ya se abrió admin
     }
-    
-    private void salirAction(){
-        JOptionPane.showMessageDialog(null, "Hasta luego inge :D!", "DESPEDIDA", JOptionPane.INFORMATION_MESSAGE );
+
+    private void salirAction() {
+        JOptionPane.showMessageDialog(null, "Hasta luego inge :D!", "DESPEDIDA",
+                JOptionPane.INFORMATION_MESSAGE);
         dispose();
         System.exit(0);
     }
-    
+
     private final JLabel titulo = new JLabel();
     private final JButton jugar = new JButton("JUGAR");
     private final JButton admin = new JButton("PALABRAS SECRETAS");
     private final JButton salir = new JButton("SALIR");
-    private final JComboBox<String> juegos = new JComboBox<>(new String[] {"Al Azar", "Fijo"});
+    private final JComboBox<String> juegos = new JComboBox<>(new String[]{"Al Azar", "Fijo"});
+    private final JComboBox<String> palabr = new JComboBox<>();
 
     public static void main(String[] args) {
-        
         new Main().setVisible(true);
-        
     }
-    
 }
