@@ -13,7 +13,7 @@ public abstract class JuegoAhorcadoBase implements JuegoAhorcado{
     
     public abstract char actualizarPalabraActual(char letra);
     
-    public abstract char verificarletra(char letra);
+    public abstract boolean verificarletra(char letra);
     
     public abstract boolean hasGanado();
     
